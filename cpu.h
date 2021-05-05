@@ -28,6 +28,7 @@ class Cpu
 	    int cycle, SP_indice, divide_counter, timer_counter;
 	    bool start_debug, gpu_debug;
 	    bool enable_interrupt;
+	    bool running;
 	public:
 		Cpu();
 	    Cpu(Mmu *p_mmu);
@@ -44,6 +45,11 @@ class Cpu
 	    bool get_interrupt_status();
 	    void change_interrupt(bool value);
 	    void POP_reg(uint16_t &value);
+	    uint8_t get_register(char C);
+	    Register get_register(string regName);
+	    SpecialRegister get_specialRegister();
+	    bool get_cpuState();
+	    void set_cpuState(bool value);
 
 
 
@@ -53,6 +59,7 @@ class Cpu
 		uint16_t get_next_2byte(uint16_t value);
 		uint8_t modify_bit(uint8_t n, uint8_t pos, uint8_t value);
 		uint16_t get_PC();
+		uint16_t get_SP();
 		void set_PC(uint16_t value);
 
 	    void XOR_A(uint8_t value);

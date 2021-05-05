@@ -29,6 +29,7 @@ Cpu::Cpu(Mmu *p_mmu)
     timer_counter = 1024;
     start_debug = false;
     gpu_debug = false;
+    running = false;
 }
 
 Cpu::~Cpu()
@@ -46,6 +47,48 @@ int Cpu::cpuStep()
     if (start_debug)
         debug();
     return cycle;
+}
+
+uint8_t Cpu::get_register(char C)
+{
+    switch (C)
+    {
+        case 'A': return AF.hi(); break;
+        case 'B': return BC.hi(); break;
+        case 'C': return BC.lo(); break;
+        case 'D': return DE.hi(); break;
+        case 'E': return DE.lo(); break;
+        case 'H': return HL.hi(); break;
+        case 'L': return HL.lo(); break;
+    }
+}
+
+Register Cpu::get_register(string regName)
+{
+    if (regName == "BC") return BC;
+    else if (regName == "DE") return DE;
+    else if (regName == "HL") return HL;
+}
+
+SpecialRegister Cpu::get_specialRegister()
+{
+
+    return AF;
+}
+
+bool Cpu::get_cpuState()
+{
+    return running;
+}
+
+void Cpu::set_cpuState(bool value)
+{
+    running = value;
+}
+
+uint16_t Cpu::get_SP()
+{
+    return SP[SP_indice];
 }
 
 int Cpu::get_cycle()

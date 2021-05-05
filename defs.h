@@ -6,6 +6,8 @@
 #include "debugger.h"
 #include "gameboy.h"
 #include "memory_viewer.h"
+#include "register_viewer.h"
+#include "instruction_viewer.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 
@@ -22,6 +24,10 @@
 #define BG_MAP_HEIGTH 256
 #define PX 2
 #define SPEED 3.6
+#define BIOS_SIZE 0xFF
+#define VARM_SIZE 0x2000
+#define ERAM_SIZE 0x2000
+#define WRAM_SIZE 0x4000
 
 /*****TEMPORARY DIMENSION*****/
 /* TODO: CHANGE TO REAL GAMMEBOY RESOLUTION */

@@ -4,7 +4,7 @@ Gameboy::Gameboy()
 {
     mmu = new Mmu();
     cpu = new Cpu(mmu);
-    debugger = new Debugger(mmu);
+    debugger = new Debugger(mmu, cpu);
 }
 
 Gameboy::~Gameboy()
