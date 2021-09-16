@@ -8,6 +8,12 @@
 #include "memory_viewer.h"
 #include "register_viewer.h"
 #include "instruction_viewer.h"
+#include "utilities.h"
+#include "machine.h"
+#include "stack_viewer.h"
+#include "timer.h"
+#include "gpu.h"
+#include "gpu_listener.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 
@@ -31,5 +37,7 @@
 
 /*****TEMPORARY DIMENSION*****/
 /* TODO: CHANGE TO REAL GAMMEBOY RESOLUTION */
-#define HEIGHT_TEMP 480
-#define WIDTH_TEMP 640
+#define HEIGHT_TEMP 768
+#define WIDTH_TEMP 1024
+
+

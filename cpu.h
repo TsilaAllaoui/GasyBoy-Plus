@@ -13,6 +13,8 @@
 using namespace std;
 
 class Mmu;
+class CpuListener;
+class Instruction_viewer;
 
 class Cpu
 {
@@ -29,6 +31,8 @@ class Cpu
 	    bool start_debug, gpu_debug;
 	    bool enable_interrupt;
 	    bool running;
+	    Instruction_viewer *cpuListenerList;
+
 	public:
 		Cpu();
 	    Cpu(Mmu *p_mmu);
@@ -50,7 +54,9 @@ class Cpu
 	    SpecialRegister get_specialRegister();
 	    bool get_cpuState();
 	    void set_cpuState(bool value);
-
+	    void addCpuListener(Instruction_viewer *listener);
+        int get_spIndex();
+        uint16_t *get_SP_Stack();
 
 
 	    /*----- UTILITY ------*/

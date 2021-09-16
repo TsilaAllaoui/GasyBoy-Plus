@@ -1,5 +1,4 @@
-#ifndef REG_H
-#define REG_H
+#pragma once
 
 #include <iostream>
 
@@ -37,5 +36,3 @@ class SpecialRegister : public Register
            /*uint8_t lo();
            uint8_t hi();*/
 };
-
-#endif // REG_H

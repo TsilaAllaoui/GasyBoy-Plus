@@ -2,7 +2,7 @@
 
 Memory_viewer::Memory_viewer(Mmu *pmmu)
 {
-    rows = 16;
+    rows = 28;
     mmu = pmmu;
     rom_size = mmu->get_romSize();
 }
@@ -15,10 +15,11 @@ Memory_viewer::~Memory_viewer()
 void Memory_viewer::Render()
 {
     memory_type = BIOS;
-    ImGui::SetNextWindowPos(ImVec2(0,330)); //Set window position to x,y
     //Create a new window with name "Memory Viewer", with size of 640,150 with some windowsflags
-    if (ImGui::Begin("Memory Viewer" ,nullptr,ImVec2(640,150), ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
+    if (ImGui::Begin("Memory Viewer" ,nullptr,ImVec2(0,0), ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
     {
+        ImGui::SetWindowPos(ImVec2(0,450)); //Set window position to x,y
+        ImGui::SetWindowSize(ImVec2(1024,574));
         float CharWidth = ImGui::CalcTextSize("F").x;                                //get "F" character font size
         float cellWidth = CharWidth * 3;                                             //3 * "F" font size
         float lineHeight = ImGui::GetTextLineHeight();                               //height of one line

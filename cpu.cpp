@@ -46,7 +46,16 @@ int Cpu::cpuStep()
     executeOpcode();
     if (start_debug)
         debug();
+
+    cpuListenerList->OnStep();
+
+
     return cycle;
+}
+
+void Cpu::addCpuListener(Instruction_viewer *listener)
+{
+	cpuListenerList = listener;
 }
 
 uint8_t Cpu::get_register(char C)
@@ -74,6 +83,16 @@ SpecialRegister Cpu::get_specialRegister()
 {
 
     return AF;
+}
+
+int Cpu::get_spIndex()
+{
+    return SP_indice;
+}
+
+uint16_t *Cpu::get_SP_Stack()
+{
+    return SP;
 }
 
 bool Cpu::get_cpuState()

@@ -19,11 +19,16 @@ int main(int argc, char **argv)
 
     //Instance of gameboy
     Gameboy gb;
+    Machine machine;
 
     //main loop
+    Uint32 acTime = 0, prevTime = 0, delta = 0, timeToRender = 0;
     bool done = false;
     while (!done)
     {
+        acTime = SDL_GetTicks();
+        delta = acTime - prevTime;
+        prevTime = acTime;
         //events handling
         SDL_Event event;
         while (SDL_PollEvent(&event))
@@ -32,8 +37,14 @@ int main(int argc, char **argv)
             if (event.type == SDL_QUIT)
                 done = true;
         }
-        //gb.step();                                 //gameboy step (fetch, decode, execute one opcode)
-        gb.get_debugger()->Render();               //rendering the debugger (no gameboy graphic yet!)
+        timeToRender+= delta;
+        gb.get_debugger()->step();
+        if (timeToRender >= 100)
+        {
+            gb.get_debugger()->Render();               //rendering the debugger (no gameboy graphic yet!)
+            machine.Render();
+            timeToRender = 0;
+        }
 
     }
     gb.get_debugger()->~Debugger();                 //destroying gameboy instance
