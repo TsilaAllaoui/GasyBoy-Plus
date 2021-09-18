@@ -11,6 +11,7 @@ class Register_viewer;
 class Cpu;
 class Instruction_viewer;
 class Stack_viewer;
+class Vram_viewer;
 
 class Debugger
 {
@@ -23,6 +24,7 @@ class Debugger
         Instruction_viewer *instrViewer;
         Register_viewer *reg_viewer;
         Stack_viewer *stackView;
+        Vram_viewer *vram_viewer;
 
     public:
         Debugger(Mmu *pmmu, Cpu *pcpu);

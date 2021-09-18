@@ -1,7 +1,7 @@
 .SUFFIX:
 
 CXX = g++
-CFLAGS = -std=c++11 -Wall
+CFLAGS = -std=c++11 -w
 
 ifeq ($(OS), Windows_NT)
 	OBJ = *.o
@@ -23,16 +23,26 @@ else
 endif
 
 
-SRC = register.cpp cpu.cpp debugger.cpp gameboy.cpp gpu.cpp instruction_viewer.cpp machine.cpp main.cpp memory_viewer.cpp mmu.cpp register_viewer.cpp stack_viewer.cpp timer.cpp utilities.cpp ./imgui/imgui.cpp ./imgui/imgui_impl_sdl.cpp ./imgui/imgui_draw.cpp 
+SRC = register.cpp cpu.cpp debugger.cpp gameboy.cpp gpu.cpp instruction_viewer.cpp machine.cpp main.cpp memory_viewer.cpp mmu.cpp register_viewer.cpp stack_viewer.cpp timer.cpp utilities.cpp vram_viewer.cpp ./imgui/imgui.cpp ./imgui/imgui_impl_sdl.cpp ./imgui/imgui_draw.cpp 
 
 all:
 	@$(CLEAN_SCREEN)
 
 	@echo ... Compiling project, Please wait a moment ...
-	@echo ***************************************
+	@echo ***********************************************
 	$(CXX) $(CFLAGS) -I$(HEADER) -L$(LIB) -o gb $(SRC) $(SDL) 
-	@echo ***************************************
+	@echo ***********************************************
 	@$(CLEAN_SCREEN)
+
+allrun:
+	@$(CLEAN_SCREEN)
+
+	@echo ... Compiling project, Please wait a moment ...
+	@echo ***********************************************
+	$(CXX) $(CFLAGS) -I$(HEADER) -L$(LIB) -o gb $(SRC) $(SDL) 
+	@echo ***********************************************
+	@$(CLEAN_SCREEN)
+	@gb.exe
 
 link : obj
 	@echo ... Linking files ...

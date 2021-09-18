@@ -7,11 +7,12 @@ Debugger::Debugger(Mmu *pmmu, Cpu *pcpu)
     window = SDL_CreateWindow("GasyBoy", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH_TEMP, HEIGHT_TEMP,SDL_WINDOW_OPENGL| SDL_WINDOW_RESIZABLE);
     glcontext = SDL_GL_CreateContext(window);
     mmu = pmmu;
+    cpu = pcpu;
     stackView = new Stack_viewer(cpu, mmu);
     memview = new Memory_viewer(mmu);
-    cpu = pcpu;
     reg_viewer = new Register_viewer(cpu);
     instrViewer = new Instruction_viewer(cpu,mmu);
+    vram_viewer = new Vram_viewer(mmu);
 }
 
 Debugger::~Debugger()
@@ -31,10 +32,11 @@ void Debugger::Render()
 {
     ImGui_ImplSdl_NewFrame(window);
 
-    instrViewer->Render();
     reg_viewer->Render();
+    instrViewer->Render();
     memview->Render();
     stackView->Render();
+    vram_viewer->Render();
 
 
     glViewport(0,0,(int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
@@ -46,7 +48,15 @@ void Debugger::Render()
 
 void Debugger::step()
 {
-    if (cpu->get_cpuState())
-            cpu->cpuStep();
+    if (cpu->get_cpuState() == RUNNING)
+        cpu->cpuStep();
+    else if (cpu->get_cpuState() == RESETED)
+    {
+        //mmu = new Mmu();
+        cpu = new Cpu(mmu);
+        stackView = new Stack_viewer(cpu, mmu);
+        memview = new Memory_viewer(mmu);
+        reg_viewer = new Register_viewer(cpu);
+    }
     //instrViewer->mouseEvent();
 }

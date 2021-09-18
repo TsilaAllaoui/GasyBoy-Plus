@@ -8,6 +8,7 @@ class Register_viewer
 {
     private:
         Cpu *cpu;
+        Mmu *mmu;
     public:
         Register_viewer(Cpu *pcpu);
         ~Register_viewer();

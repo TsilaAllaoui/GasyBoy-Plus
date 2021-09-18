@@ -23,15 +23,16 @@ class Cpu
 	    SpecialRegister AF;
 	    Register BC, DE, HL;
 	    uint16_t PC, prev_CP;
-	    uint16_t SP[0xFF];
+	    uint16_t SP;
 	    uint8_t currentOpcode;
 	    uint8_t bios_memory[0xFF];
 	    uint8_t Memory[0xFFFF];
-	    int cycle, SP_indice, divide_counter, timer_counter;
+	    int cycle, divide_counter, timer_counter;
 	    bool start_debug, gpu_debug;
 	    bool enable_interrupt;
 	    bool running;
 	    Instruction_viewer *cpuListenerList;
+		int cpuState;
 
 	public:
 		Cpu();
@@ -52,11 +53,9 @@ class Cpu
 	    uint8_t get_register(char C);
 	    Register get_register(string regName);
 	    SpecialRegister get_specialRegister();
-	    bool get_cpuState();
-	    void set_cpuState(bool value);
+	    int get_cpuState();
+	    void set_cpuState(int value);
 	    void addCpuListener(Instruction_viewer *listener);
-        int get_spIndex();
-        uint16_t *get_SP_Stack();
 
 
 	    /*----- UTILITY ------*/
@@ -66,6 +65,8 @@ class Cpu
 		uint8_t modify_bit(uint8_t n, uint8_t pos, uint8_t value);
 		uint16_t get_PC();
 		uint16_t get_SP();
+		uint16_t get_curr_SP();
+		bool get_stack_status();
 		void set_PC(uint16_t value);
 
 	    void XOR_A(uint8_t value);

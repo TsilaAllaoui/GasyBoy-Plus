@@ -21,15 +21,13 @@ Cpu::Cpu(Mmu *p_mmu)
     HL.set(0x0);
     PC = 0x0;
     prev_CP = 0x0;
-    for (int i = 0x0; i < 0xFF; i++)
-        SP[i] = 0x0;
-    SP_indice = 0;
+    SP = 0xFFFD;
     cycle = 0;
     divide_counter = 0;
     timer_counter = 1024;
     start_debug = false;
     gpu_debug = false;
-    running = false;
+    cpuState = STOPPED;
 }
 
 Cpu::~Cpu()
@@ -85,29 +83,19 @@ SpecialRegister Cpu::get_specialRegister()
     return AF;
 }
 
-int Cpu::get_spIndex()
+int Cpu::get_cpuState()
 {
-    return SP_indice;
+    return cpuState;
 }
 
-uint16_t *Cpu::get_SP_Stack()
+void Cpu::set_cpuState(int value)
 {
-    return SP;
-}
-
-bool Cpu::get_cpuState()
-{
-    return running;
-}
-
-void Cpu::set_cpuState(bool value)
-{
-    running = value;
+    cpuState = value;
 }
 
 uint16_t Cpu::get_SP()
 {
-    return SP[SP_indice];
+    return (mmu->read_ram(SP+1) << 8) | mmu->read_ram(SP);
 }
 
 int Cpu::get_cycle()
@@ -204,7 +192,7 @@ void Cpu::INC_reg_lo(Register &reg)
         AF.clear_zflag();
         AF.clear_halfcarryflag();
     }
-    AF.set_subflag();
+    AF.clear_subflag();
 }
 
 void Cpu::INC_reg_hi(Register &reg)
@@ -520,7 +508,7 @@ void Cpu::executeOpcode()
             cycle = 12;
             break;
         case 0x31:
-            push_SP(get_next_2byte());
+            SP = get_next_2byte();
             PC += 3;
             cycle = 12;
             break;
@@ -532,9 +520,13 @@ void Cpu::executeOpcode()
             break;
         case 0x33:
             //NOT SURE
-            SP[SP_indice]++;
-            cycle = 8;
-            PC++;
+            {
+                uint16_t n = get_SP() + 1;
+                mmu->write_ram(SP, n & 0xFF);
+                mmu->write_ram(SP-1, n & 0xFF00);
+                cycle = 8;
+                PC++;
+            }
             break;
         case 0x34:
             INC_Mem(HL.reg());
@@ -561,7 +553,7 @@ void Cpu::executeOpcode()
             cycle = 12;
             break;
         case 0x39:
-            ADD_HL(SP[SP_indice]);
+            ADD_HL(get_SP());
             cycle = 8;
             PC++;
             break;
@@ -572,9 +564,13 @@ void Cpu::executeOpcode()
             PC++;
             break;
         case 0x3B:
-            SP[SP_indice]--;
+        {
+            uint16_t n = get_SP() - 1;
+            mmu->write_ram(SP+1, n & 0xFF);
+            mmu->write_ram(SP, n & 0xFF00);
             cycle = 8;
             PC++;
+        }
             break;
         case 0x3C:
             INC_reg_hi(AF);
@@ -1447,7 +1443,7 @@ void Cpu::executeOpcode()
             cycle =16;
             break;
         case 0xF8:
-            LD_reg(HL, SP[SP_indice] + mmu->read_ram(PC+1));
+            LD_reg(HL, get_SP() + mmu->read_ram(PC+1));
             cycle = 12;
             PC+=2;
             break;
@@ -2785,20 +2781,17 @@ void Cpu::executeOpcode()
 }
 void Cpu::pop_SP()
 {
-    SP[SP_indice] = 0x0;
-    if (SP_indice > 0)
-        SP_indice--;
+    mmu->write_ram(SP, 0);
+    mmu->write_ram(SP+1, 0);
+    SP += 2;
 }
 
 void Cpu::push_SP(uint16_t value)
 {
-    if (SP_indice == 0 && SP[SP_indice] == 0x0)
-        SP[SP_indice] = value;
-    else
-    {
-        SP_indice++;
-        SP[SP_indice] = value;
-    }
+   SP--;
+   mmu-> write_ram(SP, value >> 8);
+   SP--;
+   mmu->write_ram(SP, value & 0xFF);
 }
 
 bool Cpu::get_gpu_debug()
@@ -3174,20 +3167,19 @@ void Cpu::AND_A(uint8_t value)
 
 void Cpu::RST(uint8_t value)
 {
-    SP_indice++;
-    SP[SP_indice] = PC + 1;
+    push_SP(PC + 1);
     PC = 0x0000 + (uint16_t)value;
 }
 
 void Cpu::POP_reg(Register &Reg)
 {
-    Reg.set(SP[SP_indice]);
+    Reg.set(get_SP());
     pop_SP();
 }
 
 void Cpu::POP_reg(uint16_t &value)
 {
-    value = SP[SP_indice];
+    value = get_SP();
     pop_SP();
 }
 
@@ -3196,7 +3188,7 @@ void Cpu::RET_Z()
 {
     if (AF.get_zflag())
     {
-        PC = SP[SP_indice];
+        PC = get_SP();
         pop_SP();
     }
     else
@@ -3207,7 +3199,7 @@ void Cpu::RET_NZ()
 {
     if (!AF.get_zflag())
     {
-        PC = SP[SP_indice];
+        PC = get_SP();
         pop_SP();
     }
     else
@@ -3218,7 +3210,7 @@ void Cpu::RET_C()
 {
     if (AF.get_carryflag())
     {
-        PC = SP[SP_indice];
+        PC = get_SP();
         pop_SP();
     }
     else
@@ -3229,7 +3221,7 @@ void Cpu::RET_NC()
 {
     if (!AF.get_carryflag())
     {
-        PC = SP[SP_indice];
+        PC = get_SP();
         pop_SP();
     }
     else
@@ -3270,7 +3262,7 @@ void Cpu::debug()
         cout << ",    C = 0" << endl;
     cout << "PC executed = " << hex << (int)mmu->read_ram(prev_CP) << " at " << hex << (int)prev_CP << endl;
     cout << "Current PC = " << hex << (int)PC << ", Memory[PC] = " << (int)mmu->read_ram(PC) << endl;
-    cout << "Currnt SP = " << hex << (int)SP[SP_indice] << endl ;
+    cout << "Currnt SP = " << hex << (int)get_SP() << endl ;
     cout << "RAM[FF44] = " << hex << (int)mmu->read_ram(0xFF43) << hex << (int)mmu->read_ram(0xFF44) << endl;
     cout << "---------------------------------" << endl;
 }
@@ -3346,8 +3338,7 @@ void Cpu::SWAP_HL()
 
 void Cpu::PUSH(Register &Reg)
 {
-    SP_indice ++;
-    SP[SP_indice] = Reg.reg();
+    push_SP(Reg.reg());
 }
 
 void Cpu::CALL_NZ()
@@ -3476,13 +3467,13 @@ void Cpu::ADC_A(uint8_t value)
 
 void Cpu::RET()
 {
-    PC = SP[SP_indice];
+    PC = get_SP();
     pop_SP();
 }
 
 void Cpu::RETI()
 {
-    PC = SP[SP_indice];
+    PC = get_SP();
     pop_SP();
     enable_interrupt = true;
 }
@@ -3499,13 +3490,16 @@ void Cpu::LDH_Mem(uint8_t value)
 
 void Cpu::ADD_SP(uint8_t value)
 {
-    SP[SP_indice] += (int8_t)value;
+    uint16_t n = get_SP();
+    n += (int8_t)value;
+    mmu->write_ram(SP, n & 0xFF);
+    mmu->write_ram(SP-1, n & 0xFF00);
     AF.clear_zflag();
     AF.clear_subflag();
-    if ((uint32_t)SP[SP_indice] + (uint32_t)value > 0xFFFF)
+    if ((uint32_t)n + (uint32_t)value > 0xFFFF)
         AF.set_carryflag();
     else AF.clear_carryflag();
-    if (SP[SP_indice] > 0x0F)
+    if (n > 0x0F)
     AF.set_halfcarryflag();
     else AF.clear_halfcarryflag();
 }
@@ -3753,4 +3747,9 @@ bool Cpu::get_interrupt_status()
 void Cpu::change_interrupt(bool value)
 {
     enable_interrupt = value;
+}
+
+uint16_t Cpu::get_curr_SP()
+{
+    return SP;
 }
