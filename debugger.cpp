@@ -14,11 +14,14 @@ Debugger::Debugger(Mmu *pmmu, Cpu *pcpu)
     ImGuiSDL::Initialize(renderer, WIDTH_TEMP, HEIGHT_TEMP);
 
     mmu = pmmu;
+    cpu = pcpu;
+  
     stackView = new Stack_viewer(cpu, mmu);
     memview = new Memory_viewer(mmu);
-    cpu = pcpu;
     reg_viewer = new Register_viewer(cpu);
     instrViewer = new Instruction_viewer(cpu,mmu);
+    vram_viewer = new Vram_viewer(mmu);
+    vram_viewer->Init();
 }
 
 Debugger::~Debugger()
@@ -44,10 +47,13 @@ void Debugger::Render()
     ImGui::NewFrame();
     ImGui_ImplSDL2_NewFrame(window);
 
-    instrViewer->Render();
     reg_viewer->Render();
+    instrViewer->Render();
     memview->Render();
-    stackView->Render();
+    stackView->Render(mmu);
+    //if (mmu->read_ram(0x8000) == 0xF0)
+    if (cpu->get_PC() >= 0xC)
+        vram_viewer->Render();
 
     ImGui::Render();
     ImGuiSDL::Render(ImGui::GetDrawData());
@@ -58,5 +64,20 @@ void Debugger::step()
 {
     if (cpu->get_cpuState())
             cpu->cpuStep();
+    //instrViewer->mouseEvent();
+}
+
+void Debugger::step()
+{
+    if (cpu->get_cpuState() == RUNNING)
+        cpu->cpuStep();
+    /*else if (cpu->get_cpuState() == RESETED)
+    {
+        //mmu = new Mmu();
+        cpu = new Cpu(mmu);
+        stackView = new Stack_viewer(cpu, mmu);
+        memview = new Memory_viewer(mmu);
+        reg_viewer = new Register_viewer(cpu);
+    }*/
     //instrViewer->mouseEvent();
 }

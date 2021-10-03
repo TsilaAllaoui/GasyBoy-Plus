@@ -8,6 +8,7 @@
 #include "memory_viewer.h"
 #include "register_viewer.h"
 #include "instruction_viewer.h"
+#include "vram_viewer.h"
 #include "utilities.h"
 #include "machine.h"
 #include "stack_viewer.h"
@@ -40,4 +41,5 @@
 #define HEIGHT_TEMP 768
 #define WIDTH_TEMP 1024
 
+enum{RUNNING, STOPPED, RESETED};
 

@@ -42,6 +42,7 @@ class Mmu
 		uint8_t joypadState;
 		bool keys[8];
 		int romSize;
+	
 	public:
 		Mmu();
 		~Mmu();
