@@ -16,7 +16,7 @@ void Memory_viewer::Render()
 {
     memory_type = BIOS;
     //Create a new window with name "Memory Viewer", with size of 640,150 with some windowsflags
-    if (ImGui::Begin("Memory Viewer" ,nullptr,ImVec2(0,0), ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
+    if (ImGui::Begin("Memory Viewer", nullptr, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
     {
         ImGui::SetWindowPos(ImVec2(0,450)); //Set window position to x,y
         ImGui::SetWindowSize(ImVec2(1024,574));

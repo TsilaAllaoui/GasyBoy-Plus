@@ -1,13 +1,21 @@
 #include "debugger.h"
 #include "defs.h"
 
+#include "imgui/imgui_sdl.h"
+
 Debugger::Debugger(Mmu *pmmu, Cpu *pcpu)
 {
-    ImGui_ImplSdl_Init(window);
-    window = SDL_CreateWindow("GasyBoy", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH_TEMP, HEIGHT_TEMP,SDL_WINDOW_OPENGL| SDL_WINDOW_RESIZABLE);
-    glcontext = SDL_GL_CreateContext(window);
+    window = SDL_CreateWindow("GasyBoy", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH_TEMP, HEIGHT_TEMP, SDL_WINDOW_RESIZABLE);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+    /* Initialize ImGUI*/
+    ImGui::CreateContext();
+    ImGui_ImplSDL2_Init(window);
+    ImGuiSDL::Initialize(renderer, WIDTH_TEMP, HEIGHT_TEMP);
+
     mmu = pmmu;
     cpu = pcpu;
+  
     stackView = new Stack_viewer(cpu, mmu);
     memview = new Memory_viewer(mmu);
     reg_viewer = new Register_viewer(cpu);
@@ -18,20 +26,26 @@ Debugger::Debugger(Mmu *pmmu, Cpu *pcpu)
 
 Debugger::~Debugger()
 {
-    ImGui_ImplSdl_Shutdown();
-    SDL_GL_DeleteContext(glcontext);
+    /* Deinitialize ImGUI */
+    ImGuiSDL::Deinitialize();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+
+    SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 }
 
 
 void Debugger::HandleEvent(SDL_Event event)
 {
-    ImGui_ImplSdl_ProcessEvent(&event);
+    ImGui_ImplSDL2_ProcessEvent(&event);
 }
 
 void Debugger::Render()
 {
-    ImGui_ImplSdl_NewFrame(window);
+    /* Begin a new frame */
+    ImGui::NewFrame();
+    ImGui_ImplSDL2_NewFrame(window);
 
     reg_viewer->Render();
     instrViewer->Render();
@@ -41,12 +55,16 @@ void Debugger::Render()
     if (cpu->get_PC() >= 0xC)
         vram_viewer->Render();
 
-
-    glViewport(0,0,(int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
-    glClearColor(1,0,0,1);
-    glClear(GL_COLOR_BUFFER_BIT);
     ImGui::Render();
-    SDL_GL_SwapWindow(window);
+    ImGuiSDL::Render(ImGui::GetDrawData());
+    SDL_RenderPresent(renderer);
+}
+
+void Debugger::step()
+{
+    if (cpu->get_cpuState())
+            cpu->cpuStep();
+    //instrViewer->mouseEvent();
 }
 
 void Debugger::step()

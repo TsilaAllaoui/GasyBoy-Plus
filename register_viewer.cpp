@@ -12,7 +12,7 @@ Register_viewer::~Register_viewer()
 
 void Register_viewer::Render()
 {
-    if (ImGui::Begin("Registers",nullptr,ImVec2(0,0), ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
+    if (ImGui::Begin("Registers", nullptr, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
     {
         ImGui::SetWindowPos(ImVec2(350,0));
         ImGui::SetWindowSize(ImVec2(150,230));
