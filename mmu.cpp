@@ -60,7 +60,11 @@ uint8_t Mmu::read_ram(uint16_t adrr)
 		if (adrr < 0x8000)
 			return ROM[adrr];
 		else if (adrr >= 0x8000 && adrr < 0xA000)
-			return VRAM[adrr - 0x8000];
+        {
+            // cout << hex << (int)VRAM[adrr - 0x8000] << " readed from vram" << endl;
+            return VRAM[adrr - 0x8000];
+        }
+			
 		else if (adrr >= 0xA000 && adrr < 0xC000)
 			return ExtRAM[adrr - 0xA000];
 		else if (adrr >= 0xC000 && adrr <= 0xFFFF)
@@ -76,9 +80,10 @@ void Mmu::write_ram(uint16_t adrr, uint8_t value)
 {
 	if (adrr < 0x7FFF)
 		return;
-	if (adrr >= 0x8000 && adrr < 0xA000)
+	else if (adrr >= 0x8000 && adrr < 0xA000)
 	{
 		VRAM[adrr - 0x8000] = value;
+        // cout << hex << (int)value << " stored into vram" << endl;
 		if (value != 0)
 			modified_vram = true;
 	}
@@ -86,13 +91,18 @@ void Mmu::write_ram(uint16_t adrr, uint8_t value)
 		ExtRAM[adrr - 0xA000] = value;
 	else if (adrr >= 0xC000 && adrr <= 0xFFFF)
 	{
-		if (adrr == 0xFF46)
+        WorkingRAM[adrr - 0xC000] = value;
+		/*if (adrr == 0xFF46)
  			DoDMATransfert(value);
-		if (adrr == 0xFF44)
+        else if (adrr = 0xFF47)
+        {
+            
+        }
+		else if (adrr == 0xFF44)
 			WorkingRAM[adrr] = 0;
-		if (adrr != 0xFF85)// && adrr != 0xFF00)
+		else //(adrr != 0xFF85)// && adrr != 0xFF00)
 			WorkingRAM[adrr - 0xC000] = value;
-		else return;
+		//else return;*/
 	}
 }
 

@@ -67,26 +67,30 @@ void Register_viewer::Render()
         ImGui::PopStyleColor();
 
         ImGui::Text("PC: %04X", cpu->get_PC());
-        ImGui::Text("SP: %04X", cpu->get_SP());
-
+        ImGui::Text("SP: %04X", cpu->get_curr_SP());
         ImGui::Separator();
 
         if (ImGui::Button("Step"))
         {
-            if (!cpu->get_cpuState())
+            if (cpu->get_cpuState() == STOPPED)
                 cpu->cpuStep();
         }
 
+
+        ///////**********************************NOT FUNCTIONNAL*********************************//////
+        /*ImGui::SameLine(75);
+
+        if (ImGui::Button("Reset"))
+            cpu->set_cpuState(RESETED);
+        */
         if (ImGui::Button("Continue"))
-            cpu->set_cpuState(true);
+            cpu->set_cpuState(RUNNING);
 
         ImGui::SameLine(75);
 
         if (ImGui::Button("Stop"))
-            cpu->set_cpuState(false);
+            cpu->set_cpuState(STOPPED);
 
-//        if (cpu->get_cpuState())
-//            cpu->cpuStep();
     }
     ImGui::End();
 }

@@ -22,7 +22,7 @@ void Instruction_viewer::OnStep()
         for (int i=0; i<breakPointList.size(); i++)
         {
             if (mapInstr2line[pc] == breakPointList[i])
-                cpu->set_cpuState(false);
+                cpu->set_cpuState(STOPPED);
         }
     }
 
