@@ -86,7 +86,7 @@ class Cpu
 	    void DEC_Mem(uint16_t value);
 
 	    void add2bytes_to_memory(uint16_t pos, uint16_t value);
-	    void pop_SP();
+	    uint16_t pop_SP();
 	    void push_SP(uint16_t value);
 	    bool get_gpu_debug();
 

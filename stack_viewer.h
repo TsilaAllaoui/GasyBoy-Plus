@@ -14,5 +14,5 @@ class Stack_viewer
     public:
         Stack_viewer(Cpu *pcpu, Mmu *pmmu);
         ~Stack_viewer();
-        void Render();
+        void Render(Mmu *pmmu);
 };

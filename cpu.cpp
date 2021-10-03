@@ -1256,7 +1256,7 @@ void Cpu::executeOpcode()
             cycle = 24;
             break;
         case 0xC5:
-            PUSH(BC);
+            push_SP(BC.reg());
             PC++;
             cycle = 16;
             break;
@@ -2779,19 +2779,29 @@ void Cpu::executeOpcode()
             break;
     }
 }
-void Cpu::pop_SP()
+uint16_t Cpu::pop_SP()
 {
+    uint16_t value = ((mmu->read_ram(SP+1) << 8) | mmu->read_ram(SP));
     mmu->write_ram(SP, 0);
     mmu->write_ram(SP+1, 0);
+    if (SP < 0xFFFE)
     SP += 2;
+    return value;
 }
 
 void Cpu::push_SP(uint16_t value)
 {
-   SP--;
-   mmu-> write_ram(SP, value >> 8);
-   SP--;
-   mmu->write_ram(SP, value & 0xFF);
+    if (SP == 0xFFFE && mmu->read_ram(0xFFFE) == 0 && mmu->read_ram(0xFFFF) == 0)
+    {
+        mmu->write_ram(0xFFFF, (value >> 8));
+        mmu->write_ram(0xFFFE, (value & 0xFF));
+    }
+    else
+    {
+        mmu->write_ram(SP-1, (value >> 8));
+        mmu->write_ram(SP-2, (value & 0xFF));
+        SP-=2;
+    }
 }
 
 bool Cpu::get_gpu_debug()
@@ -3173,14 +3183,12 @@ void Cpu::RST(uint8_t value)
 
 void Cpu::POP_reg(Register &Reg)
 {
-    Reg.set(get_SP());
-    pop_SP();
+    Reg.set(pop_SP());
 }
 
 void Cpu::POP_reg(uint16_t &value)
 {
-    value = get_SP();
-    pop_SP();
+    value = pop_SP();
 }
 
 
@@ -3188,8 +3196,7 @@ void Cpu::RET_Z()
 {
     if (AF.get_zflag())
     {
-        PC = get_SP();
-        pop_SP();
+        PC = pop_SP();
     }
     else
         PC++;
@@ -3199,8 +3206,7 @@ void Cpu::RET_NZ()
 {
     if (!AF.get_zflag())
     {
-        PC = get_SP();
-        pop_SP();
+        PC = pop_SP();
     }
     else
         PC++;
@@ -3210,8 +3216,7 @@ void Cpu::RET_C()
 {
     if (AF.get_carryflag())
     {
-        PC = get_SP();
-        pop_SP();
+        PC = pop_SP();
     }
     else
         PC++;
@@ -3221,8 +3226,7 @@ void Cpu::RET_NC()
 {
     if (!AF.get_carryflag())
     {
-        PC = get_SP();
-        pop_SP();
+        PC = pop_SP();
     }
     else
         PC++;
@@ -3467,14 +3471,12 @@ void Cpu::ADC_A(uint8_t value)
 
 void Cpu::RET()
 {
-    PC = get_SP();
-    pop_SP();
+    PC = pop_SP();
 }
 
 void Cpu::RETI()
 {
-    PC = get_SP();
-    pop_SP();
+    PC = pop_SP();
     enable_interrupt = true;
 }
 

@@ -13,6 +13,7 @@ Debugger::Debugger(Mmu *pmmu, Cpu *pcpu)
     reg_viewer = new Register_viewer(cpu);
     instrViewer = new Instruction_viewer(cpu,mmu);
     vram_viewer = new Vram_viewer(mmu);
+    vram_viewer->Init();
 }
 
 Debugger::~Debugger()
@@ -35,8 +36,10 @@ void Debugger::Render()
     reg_viewer->Render();
     instrViewer->Render();
     memview->Render();
-    stackView->Render();
-    vram_viewer->Render();
+    stackView->Render(mmu);
+    //if (mmu->read_ram(0x8000) == 0xF0)
+    if (cpu->get_PC() >= 0xC)
+        vram_viewer->Render();
 
 
     glViewport(0,0,(int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
@@ -50,13 +53,13 @@ void Debugger::step()
 {
     if (cpu->get_cpuState() == RUNNING)
         cpu->cpuStep();
-    else if (cpu->get_cpuState() == RESETED)
+    /*else if (cpu->get_cpuState() == RESETED)
     {
         //mmu = new Mmu();
         cpu = new Cpu(mmu);
         stackView = new Stack_viewer(cpu, mmu);
         memview = new Memory_viewer(mmu);
         reg_viewer = new Register_viewer(cpu);
-    }
+    }*/
     //instrViewer->mouseEvent();
 }
