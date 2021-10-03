@@ -3,7 +3,6 @@
 #include "defs.h"
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
 
 class Memory_viewer;
 class Mmu;
@@ -15,11 +14,13 @@ class Stack_viewer;
 class Debugger
 {
     private:
-        SDL_GLContext glcontext;
         SDL_Window *window = nullptr;
-        Memory_viewer *memview;
+        SDL_Renderer *renderer = nullptr;
+
         Cpu *cpu;
         Mmu *mmu;
+
+        Memory_viewer *memview;
         Instruction_viewer *instrViewer;
         Register_viewer *reg_viewer;
         Stack_viewer *stackView;
