@@ -59,7 +59,7 @@ void Instruction_viewer::showLine(int *index)
 void Instruction_viewer::Render()
 {
 
-    if (ImGui::Begin("Instructions", nullptr, ImVec2(0,0), ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
+    if (ImGui::Begin("Instructions", nullptr, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
     {
         ImGui::SetWindowPos(ImVec2(0,0));
         ImGui::SetWindowSize(ImVec2(350,450));

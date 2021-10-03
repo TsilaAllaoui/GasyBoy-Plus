@@ -14,7 +14,7 @@ Stack_viewer::~Stack_viewer()
 
 void Stack_viewer::Render()
 {
-   if (ImGui::Begin("Stack",nullptr,ImVec2(0,0), ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
+   if (ImGui::Begin("Stack", nullptr, ImGuiWindowFlags_NoResize |  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
     {
         ImGui::SetWindowPos(ImVec2(350,230));
         ImGui::SetWindowSize(ImVec2(150,220));

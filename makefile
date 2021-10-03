@@ -16,14 +16,15 @@ else
 	OBJ = obj/*
 	LIB = .
 	HEADER = /usr/include/SDL2/
-	SDL = -lSDL2 -lSDL2_ttf -lopnegl32
+	SDL = -lSDL2 -lSDL2_ttf
 	MOVE = mkdir -p obj/ && mv *.o obj/
 	DEL_OBJ = rm -f *.o
 	DEL_BIN = rm -f gb
 endif
 
+IMGUI = imgui/imgui_demo.cpp imgui/imgui_draw.cpp imgui/imgui_impl_sdl.cpp imgui/imgui_sdl.cpp imgui/imgui_tables.cpp imgui/imgui_widgets.cpp imgui/imgui.cpp
 
-SRC = register.cpp cpu.cpp debugger.cpp gameboy.cpp gpu.cpp instruction_viewer.cpp machine.cpp main.cpp memory_viewer.cpp mmu.cpp register_viewer.cpp stack_viewer.cpp timer.cpp utilities.cpp ./imgui/imgui.cpp ./imgui/imgui_impl_sdl.cpp ./imgui/imgui_draw.cpp 
+SRC = register.cpp cpu.cpp debugger.cpp gameboy.cpp gpu.cpp instruction_viewer.cpp machine.cpp main.cpp memory_viewer.cpp mmu.cpp register_viewer.cpp stack_viewer.cpp timer.cpp utilities.cpp $(IMGUI)
 
 all:
 	@$(CLEAN_SCREEN)
