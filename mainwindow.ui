@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>620</width>
+    <height>569</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="MemoryViewer" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>280</y>
+      <width>601</width>
+      <height>261</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="Disassembler" name="widget_2" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>251</width>
+      <height>261</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="RegisterViewer" name="widget_3" native="true">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>10</y>
+      <width>171</width>
+      <height>261</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="StackViewer" name="widget_4" native="true">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>10</y>
+      <width>161</width>
+      <height>261</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MemoryViewer</class>
+   <extends>QWidget</extends>
+   <header>memoryviewer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Disassembler</class>
+   <extends>QWidget</extends>
+   <header>disassembler.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RegisterViewer</class>
+   <extends>QWidget</extends>
+   <header>registerviewer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StackViewer</class>
+   <extends>QWidget</extends>
+   <header>stackviewer.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

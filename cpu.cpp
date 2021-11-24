@@ -27,7 +27,6 @@ Cpu::Cpu(Mmu *p_mmu)
     timer_counter = 1024;
     start_debug = false;
     gpu_debug = false;
-    cpuState = STOPPED;
 }
 
 Cpu::~Cpu()
@@ -45,15 +44,9 @@ int Cpu::cpuStep()
     if (start_debug)
         debug();
 
-    cpuListenerList->OnStep();
 
 
     return cycle;
-}
-
-void Cpu::addCpuListener(Instruction_viewer *listener)
-{
-	cpuListenerList = listener;
 }
 
 uint8_t Cpu::get_register(char C)

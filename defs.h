@@ -1,26 +1,18 @@
 #pragma once
 
+#include <QStringList>
+#include <QStringListModel>
+#include <QListWidget>
+#include <QAbstractItemView>
+#include <QDebug>
+
 #include "cpu.h"
 #include "register.h"
 #include "mmu.h"
-#include "debugger.h"
-#include "gameboy.h"
-#include "memory_viewer.h"
-#include "register_viewer.h"
-#include "instruction_viewer.h"
-#include "vram_viewer.h"
-#include "utilities.h"
-#include "machine.h"
-#include "stack_viewer.h"
-#include "timer.h"
-#include "gpu.h"
-#include "gpu_listener.h"
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_sdl.h"
-
-
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
+#include "disassembler.h"
+#include "registerviewer.h"
+#include "memoryviewer.h"
+#include "stackviewer.h"
 
 #define MAXCYCLE 70224
 #define WIDTH 160
@@ -41,5 +33,59 @@
 #define HEIGHT_TEMP 768
 #define WIDTH_TEMP 1024
 
-enum{RUNNING, STOPPED, RESETED};
+
+/*#ifndef REGISTERVIEWER_H
+#define REGISTERVIEWER_H
+
+//#include <QMainWindow>
+#include "defs.h"
+#include <QHBoxLayout>
+
+class Cpu;
+class Mmu;
+
+//namespace Ui {
+//class RegisterViewer;
+//}
+
+class RegisterViewer : public QWidget
+{
+    Q_OBJECT
+
+public:
+    RegisterViewer(Cpu *cpu, Mmu *mmu, QMainWindow *MainWindow);
+    ~RegisterViewer();
+
+private:
+    //Ui::RegisterViewer *ui;
+    Mmu *mmu;
+    Cpu *cpu;
+    QHBoxLayout *layout;
+};
+
+#endif // REGISTERVIEWER_H
+*/
+
+
+
+
+/*#include "registerviewer.h"
+#include "ui_registerviewer.h"
+#include <QPushButton>
+
+RegisterViewer::RegisterViewer(Cpu *cpu, Mmu *mmu, QMainWindow *MainWindow) //:
+    //ui(new Ui::RegisterViewer)
+{
+    //ui->setupUi(MainWindow);
+    layout = new QHBoxLayout(MainWindow);
+    QPushButton *btn = new QPushButton("Push");
+    layout->addWidget(btn);
+}
+
+RegisterViewer::~RegisterViewer()
+{
+    //delete ui;
+}
+*/
+
 
