@@ -8,20 +8,32 @@ Mmu::Mmu()
 		ROM[i] = 0x0;
 	for (int i = 0; i < 0x2000; i++)
 		VRAM[i] = 0;
+	
+    /*VRAM[0] = 0xF3;
+	VRAM[1] = 0;
+	VRAM[2] = 0xF3;
+	VRAM[3] = 0;
+	VRAM[4] = 0xFE;
+	VRAM[5] = 0;
+	VRAM[6] = 0xFE;
+    VRAM[7] = 0;*/
+	
 	for (int i = 0; i < 0x2000; i++)
 		ExtRAM[i] = 0x0;
 	for (int i = 0; i < 0x4000; i++)
 		WorkingRAM[i] = 0x0;
 	in_bios = true;
 	modified_vram = false;
-	char filename[50] = "./TETRIS.gb";
-	loadRom(filename);
+    QString filename =  "C:/Users/Allaoui/Documents/GasyBoy/TETRIS.gb";
+    loadRom(filename);
 	WorkingRAM[0xFF00 - 0xC000] = 0xEF;
 	WorkingRAM[0xFF85 - 0xC000] = 0x01;
 
 	joypadState = 0x0F;
     for (int i=0; i<8; i++)
         keys[i] = false;
+
+
 }
 
 Mmu::~Mmu()
@@ -254,20 +266,22 @@ uint8_t Mmu::GetJoyPad()
     }*/
 }
 
-void Mmu::loadRom(char *filename)
+void Mmu::loadRom(QString filename)
 {
-	ifstream Rom(filename, ios::in | ios::binary | ios::ate);
-	if (Rom.is_open())
-	{
-		romSize = Rom.tellg();
-		char *buff = new char[romSize];
-		Rom.seekg(0, std::ios::beg);
-		Rom.read(buff, romSize);
-		for (int i = 0; i < romSize; i++)
-			ROM[i] = (uint8_t) buff[i];
 
-		Rom.close();
-	}
+    QFile file(filename);
+    if(file.open(QIODevice::ReadWrite))//open(QIODevice::ReadOnly) == false)
+    {
+        int i = 0;
+        while(!file.atEnd())
+        {
+            char c;
+            file.read(&c, sizeof (char));
+            ROM[i] = (uint8_t)c;
+            i++;
+        }
+       file.close();
+    }
     else exit(1);
 }
 
