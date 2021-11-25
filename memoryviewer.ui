@@ -53,6 +53,21 @@
       <string>ROM</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>VRAM</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>EXTRAM</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>WRAM</string>
+     </property>
+    </item>
    </widget>
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">

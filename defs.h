@@ -5,6 +5,8 @@
 #include <QListWidget>
 #include <QAbstractItemView>
 #include <QDebug>
+#include <QMessageBox>
+#include <vector>
 
 #include "cpu.h"
 #include "register.h"

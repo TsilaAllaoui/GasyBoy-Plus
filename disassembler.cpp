@@ -18,7 +18,6 @@ Disassembler::Disassembler(Cpu *pcpu, Mmu *pmmu, QWidget *parent) :
     mmu = pmmu;
     cpu = pcpu;
     running = false;
-    step = 1;
     int i = 0;
     while (i < (BIOS_SIZE + 0x8000))
     {
@@ -3335,24 +3334,14 @@ void Disassembler::fillMap()
 
 void Disassembler::update()
 {
-    //if (running )
-    {
-        cpu->cpuStep();
-        ui->listWidget->setCurrentRow(OpMap[cpu->get_PC()]);
-        //qDebug() << "update...";
-    }
+    cpu->cpuStep();
+    ui->listWidget->setCurrentRow(OpMap[cpu->get_PC()]);
 }
 
 void Disassembler::on_pushButton_clicked()
 {
-    while (step > 0)
-    {
-        cpu->cpuStep();
-        ui->listWidget->setCurrentRow(OpMap[cpu->get_PC()]);
-        emit this->cpuStepped();
-        step--;
-    }
-    if (step == 0) step = 1;
+    this->update();
+    emit this->cpuStepped();
 }
 
 void Disassembler::on_ContinueButton_clicked()
@@ -3361,30 +3350,25 @@ void Disassembler::on_ContinueButton_clicked()
     ui->ContinueButton->setText(running ? "Stop" : "Continue");
     while (running)
     {
-        cpu->cpuStep();
-        ui->listWidget->setCurrentRow(OpMap[cpu->get_PC()]);
+        this->update();
         emit cpuStepped();
         QCoreApplication::processEvents();
     }
 }
 
-void Disassembler::on_pushButton_2_clicked()
-{
-    step = 1000;
-    while (step > 0)
-    {
-        cpu->cpuStep();
-        ui->listWidget->setCurrentRow(OpMap[cpu->get_PC()]);
-        emit this->cpuStepped();
-        step--;
-    }
 
+void Disassembler::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
+{
+    item->setBackgroundColor(QColor(Qt::red));
+    //TODO: push item index to breakpoint list
 }
 
-void Disassembler::loop()
+
+void Disassembler::on_pushButton_2_clicked()
 {
-    qDebug() << "loop";
-    cpu->cpuStep();
-    ui->listWidget->setCurrentRow(OpMap[cpu->get_PC()]);
+    connect(this, SIGNAL(emuReset()), parent(), SLOT(reset()));
+    QMessageBox::StandardButton choice =  QMessageBox::question(this, "Reset the emulator?", "are you sure?");
+    if (choice == QMessageBox::Yes)
+        emit emuReset();
 }
 

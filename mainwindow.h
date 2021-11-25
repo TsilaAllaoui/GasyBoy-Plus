@@ -25,6 +25,9 @@ public:
     ~MainWindow();
     void update();
 
+public slots:
+    void reset();
+
 private:
     Ui::MainWindow *ui;
 

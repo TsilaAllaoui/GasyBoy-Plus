@@ -21,6 +21,9 @@ public:
     ~StackViewer();
     void update();
 
+public slots:
+    void onCpuStepped();
+
 private:
     Ui::StackViewer *ui;
     Mmu *mmu;

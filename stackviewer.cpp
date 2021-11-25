@@ -24,9 +24,16 @@ StackViewer::~StackViewer()
 
 void StackViewer::update()
 {
+    ui->listWidget->clear();
     for (uint16_t i = 0xFFFE; i>=cpu->get_curr_SP(); i-=2)
     {
-        QString tmp = QString::number(i, 16) + ": " + QString::number(mmu->read_ram(i), 16) + QString::number(mmu->read_ram(i+1), 16);
+        //TODO: make all number in two digits
+        QString tmp = QString::number(i, 16).toUpper() + ": " + QString::number(mmu->read_ram(i), 16).toUpper() + QString::number(mmu->read_ram(i+1), 16).toUpper();
         ui->listWidget->addItem(tmp);
     }
+}
+
+void StackViewer::onCpuStepped()
+{
+    this->update();
 }

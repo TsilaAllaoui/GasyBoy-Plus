@@ -28,7 +28,7 @@ private:
     bool loop;
 
 public slots:
-    void updateRegisters();
+    void onCpuStepped();
 };
 
 #endif // REGISTERVIEWER_H

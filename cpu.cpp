@@ -15,12 +15,12 @@ Cpu::Cpu(Mmu *p_mmu)
 {
     enable_interrupt = false;
     mmu = p_mmu;
-    AF.set(0x0);
-    BC.set(0x0);
-    DE.set(0x0);
-    HL.set(0x0);
-    PC = 0x0;
-    prev_CP = 0x0;
+    AF.set(0);
+    BC.set(0);
+    DE.set(0);
+    HL.set(0);
+    PC = 0;
+    prev_CP = 0;
     SP = 0xFFFD;
     cycle = 0;
     divide_counter = 0;

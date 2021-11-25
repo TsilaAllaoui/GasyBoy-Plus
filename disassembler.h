@@ -19,6 +19,8 @@ struct opcode
     QString mnemonic;
 };
 
+using namespace std;
+
 namespace Ui {
 class Disassembler;
 }
@@ -37,14 +39,14 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    //void on_ContinueButton_clicked();
     void on_ContinueButton_clicked();
+    void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
 
     void on_pushButton_2_clicked();
 
-    void loop();
 signals:
     void cpuStepped();
+    void emuReset();
 
 private:
     Cpu *cpu;
@@ -54,7 +56,7 @@ private:
     std::vector<uint8_t> listA;
     std::vector<int> listB;
     bool running;
-    int step;
+    vector<int> breakPoints;
 };
 
 #endif // DISASSEMBLER_H

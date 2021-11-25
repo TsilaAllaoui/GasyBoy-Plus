@@ -44,7 +44,6 @@ void MemoryViewer::update()
             }
         }
     }
-
     else if (ui->comboBox->currentText() == "ROM")
     {
         ui->tableWidget->setRowCount(0x8000 /divide);
@@ -55,6 +54,51 @@ void MemoryViewer::update()
             for (int j=0; j<divide; j++)
             {
                 uint8_t value = mmu->get_rom()[i*divide+j];
+                QTableWidgetItem *item = new QTableWidgetItem(QString::number(value, 16).toUpper());
+                ui->tableWidget->setItem(i, j, item);
+            }
+        }
+    }
+    else if (ui->comboBox->currentText() == "VRAM")
+    {
+        ui->tableWidget->setRowCount(0x2000/divide);
+        Hhead = "VRAM";
+        for (int i=0; i<ui->tableWidget->rowCount(); i++)
+        {
+            Vheaders << Hhead + QString::number(i*divide, 16).toUpper();
+            for (int j=0; j<divide; j++)
+            {
+                uint8_t value = mmu->get_vram()[i*divide+j];
+                QTableWidgetItem *item = new QTableWidgetItem(QString::number(value, 16).toUpper());
+                ui->tableWidget->setItem(i, j, item);
+            }
+        }
+    }
+    else if (ui->comboBox->currentText() == "EXTRAM")
+    {
+        ui->tableWidget->setRowCount(0x2000/divide);
+        Hhead = "EXTRAM";
+        for (int i=0; i<ui->tableWidget->rowCount(); i++)
+        {
+            Vheaders << Hhead + QString::number(i*divide, 16).toUpper();
+            for (int j=0; j<divide; j++)
+            {
+                uint8_t value = mmu->get_extram()[i*divide+j];
+                QTableWidgetItem *item = new QTableWidgetItem(QString::number(value, 16).toUpper());
+                ui->tableWidget->setItem(i, j, item);
+            }
+        }
+    }
+    else if (ui->comboBox->currentText() == "WRAM")
+    {
+        ui->tableWidget->setRowCount(0x4000/divide);
+        Hhead = "WRAM";
+        for (int i=0; i<ui->tableWidget->rowCount(); i++)
+        {
+            Vheaders << Hhead + QString::number(i*divide, 16).toUpper();
+            for (int j=0; j<divide; j++)
+            {
+                uint8_t value = mmu->get_workingram()[i*divide+j];
                 QTableWidgetItem *item = new QTableWidgetItem(QString::number(value, 16).toUpper());
                 ui->tableWidget->setItem(i, j, item);
             }
