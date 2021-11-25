@@ -44,6 +44,10 @@ void MemoryViewer::update()
             }
         }
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
     else if (ui->comboBox->currentText() == "ROM")
     {
         ui->tableWidget->setRowCount(0x8000 /divide);
@@ -59,6 +63,7 @@ void MemoryViewer::update()
             }
         }
     }
+<<<<<<< HEAD
     else if (ui->comboBox->currentText() == "VRAM")
     {
         ui->tableWidget->setRowCount(0x2000/divide);
@@ -104,6 +109,8 @@ void MemoryViewer::update()
             }
         }
     }
+=======
+>>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
 
     ui->tableWidget->setVerticalHeaderLabels(Vheaders);
     for (int i=0; i<ui->tableWidget->columnCount(); i++)

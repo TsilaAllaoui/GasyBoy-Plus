@@ -69,7 +69,11 @@
        <item>
         <widget class="QPushButton" name="pushButton_2">
          <property name="text">
+<<<<<<< HEAD
           <string>Reset</string>
+=======
+          <string>Jump</string>
+>>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
          </property>
         </widget>
        </item>
@@ -78,11 +82,14 @@
     </layout>
    </widget>
   </widget>
+<<<<<<< HEAD
   <action name="actionReset">
    <property name="text">
     <string>Reset</string>
    </property>
   </action>
+=======
+>>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
  </widget>
  <resources/>
  <connections/>

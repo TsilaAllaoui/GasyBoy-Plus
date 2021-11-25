@@ -24,6 +24,7 @@ StackViewer::~StackViewer()
 
 void StackViewer::update()
 {
+<<<<<<< HEAD
     ui->listWidget->clear();
     for (uint16_t i = 0xFFFE; i>=cpu->get_curr_SP(); i-=2)
     {
@@ -37,3 +38,11 @@ void StackViewer::onCpuStepped()
 {
     this->update();
 }
+=======
+    for (uint16_t i = 0xFFFE; i>=cpu->get_curr_SP(); i-=2)
+    {
+        QString tmp = QString::number(i, 16) + ": " + QString::number(mmu->read_ram(i), 16) + QString::number(mmu->read_ram(i+1), 16);
+        ui->listWidget->addItem(tmp);
+    }
+}
+>>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4

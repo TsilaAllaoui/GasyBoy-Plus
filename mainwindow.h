@@ -25,9 +25,12 @@ public:
     ~MainWindow();
     void update();
 
+<<<<<<< HEAD
 public slots:
     void reset();
 
+=======
+>>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
 private:
     Ui::MainWindow *ui;
 

@@ -5,8 +5,11 @@
 #include <QListWidget>
 #include <QAbstractItemView>
 #include <QDebug>
+<<<<<<< HEAD
 #include <QMessageBox>
 #include <vector>
+=======
+>>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
 
 #include "cpu.h"
 #include "register.h"

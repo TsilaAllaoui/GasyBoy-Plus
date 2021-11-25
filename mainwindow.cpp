@@ -14,8 +14,12 @@ MainWindow::MainWindow(QWidget *parent)
     memoryviewer = new MemoryViewer(mmu, this);
     stackviewer = new StackViewer(cpu, mmu, this);
 
+<<<<<<< HEAD
     connect(disassembler, SIGNAL(cpuStepped()), registerviewer, SLOT(onCpuStepped()));
     connect(disassembler, SIGNAL(cpuStepped()), stackviewer, SLOT(onCpuStepped()));
+=======
+    connect(disassembler, SIGNAL(cpuStepped()), registerviewer, SLOT(updateRegisters()));
+>>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
 }
 MainWindow::~MainWindow()
 {
@@ -29,6 +33,7 @@ void MainWindow::update()
     stackviewer->update();
     this->show();
 }
+<<<<<<< HEAD
 
 void MainWindow::reset()
 {
@@ -47,3 +52,5 @@ void MainWindow::reset()
     this->update();
     this->show();
 }
+=======
+>>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
