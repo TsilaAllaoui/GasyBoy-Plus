@@ -18,10 +18,7 @@ Disassembler::Disassembler(Cpu *pcpu, Mmu *pmmu, QWidget *parent) :
     mmu = pmmu;
     cpu = pcpu;
     running = false;
-<<<<<<< HEAD:disassembler.cpp
-=======
-    step = 1;
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4:instruction_viewer.cpp
+    disassemblerThread = new QThread;
     int i = 0;
     while (i < (BIOS_SIZE + 0x8000))
     {
@@ -38,7 +35,6 @@ Disassembler::Disassembler(Cpu *pcpu, Mmu *pmmu, QWidget *parent) :
     }
     this->fillMap();
     ui->listWidget->setCurrentRow(0);
-<<<<<<< HEAD:disassembler.cpp
 }
 
 Disassembler::~Disassembler()
@@ -46,15 +42,6 @@ Disassembler::~Disassembler()
     delete ui;
 }
 
-=======
-}
-
-Disassembler::~Disassembler()
-{
-    delete ui;
-}
-
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4:instruction_viewer.cpp
 opcode Disassembler::getOpcodeInfos(int index)
 {
     opcode currOpcode;
@@ -3348,87 +3335,74 @@ void Disassembler::fillMap()
 
 void Disassembler::update()
 {
-<<<<<<< HEAD:disassembler.cpp
-    cpu->cpuStep();
+    ui->ContinueButton->setText(running ? "Stop" : "Continue");
     ui->listWidget->setCurrentRow(OpMap[cpu->get_PC()]);
-=======
-    //if (running )
-    {
-        cpu->cpuStep();
-        ui->listWidget->setCurrentRow(OpMap[cpu->get_PC()]);
-        //qDebug() << "update...";
-    }
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4:instruction_viewer.cpp
+}
+
+void Disassembler::cpuStep()
+{
+    cpu->cpuStep();
 }
 
 void Disassembler::on_pushButton_clicked()
 {
-<<<<<<< HEAD:disassembler.cpp
+    this->cpuStep();
     this->update();
     emit this->cpuStepped();
-=======
-    while (step > 0)
-    {
-        cpu->cpuStep();
-        ui->listWidget->setCurrentRow(OpMap[cpu->get_PC()]);
-        emit this->cpuStepped();
-        step--;
-    }
-    if (step == 0) step = 1;
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4:instruction_viewer.cpp
 }
 
 void Disassembler::on_ContinueButton_clicked()
 {
     running = running ? false : true;
-    ui->ContinueButton->setText(running ? "Stop" : "Continue");
     while (running)
     {
-<<<<<<< HEAD:disassembler.cpp
+        for (int i=0; i<(int)breakPoints.size(); i++)
+            if (ui->listWidget->currentRow()+1 == breakPoints[i])
+            {
+                running = false;
+                this->cpuStep();
+                this->update();
+                return;
+            }
+        this->cpuStep();
         this->update();
-=======
-        cpu->cpuStep();
-        ui->listWidget->setCurrentRow(OpMap[cpu->get_PC()]);
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4:instruction_viewer.cpp
         emit cpuStepped();
         QCoreApplication::processEvents();
     }
 }
 
-<<<<<<< HEAD:disassembler.cpp
 
 void Disassembler::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 {
-    item->setBackgroundColor(QColor(Qt::red));
-    //TODO: push item index to breakpoint list
+    if (!breakPoints.empty())
+    {
+        for (int i=0; i<(int)breakPoints.size(); i++)
+        {
+            if (breakPoints[i] == ui->listWidget->row(item))
+            {
+                breakPoints.erase(breakPoints.begin() + i);
+                item->setBackgroundColor(QColor(Qt::white));
+                return;
+            }
+            QCoreApplication::processEvents();
+        }
+        breakPoints.push_back(ui->listWidget->row(item));
+        item->setBackgroundColor(QColor(Qt::red));
+    }
+    else
+    {
+        breakPoints.push_back(ui->listWidget->row(item));
+        item->setBackgroundColor(QColor(Qt::red));
+    }
+    this->update();
 }
-
 
 void Disassembler::on_pushButton_2_clicked()
 {
-    connect(this, SIGNAL(emuReset()), parent(), SLOT(reset()));
+    /*QObject::connect(this, SIGNAL(emuReset()), parent, SLOT(reset()));
     QMessageBox::StandardButton choice =  QMessageBox::question(this, "Reset the emulator?", "are you sure?");
     if (choice == QMessageBox::Yes)
-        emit emuReset();
-=======
-void Disassembler::on_pushButton_2_clicked()
-{
-    step = 1000;
-    while (step > 0)
-    {
-        cpu->cpuStep();
-        ui->listWidget->setCurrentRow(OpMap[cpu->get_PC()]);
-        emit this->cpuStepped();
-        step--;
-    }
+        emit emuReset();*/
 
+    //ERROR RESETTING, MAY HAVE TO BE FIXED
 }
-
-void Disassembler::loop()
-{
-    qDebug() << "loop";
-    cpu->cpuStep();
-    ui->listWidget->setCurrentRow(OpMap[cpu->get_PC()]);
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4:instruction_viewer.cpp
-}
-

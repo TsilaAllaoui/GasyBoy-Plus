@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>620</width>
-    <height>569</height>
+    <width>1010</width>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,6 +54,16 @@
      </rect>
     </property>
    </widget>
+   <widget class="VramViewer" name="widget_5" native="true">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>10</y>
+      <width>381</width>
+      <height>381</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
@@ -80,6 +90,12 @@
    <class>StackViewer</class>
    <extends>QWidget</extends>
    <header>stackviewer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VramViewer</class>
+   <extends>QWidget</extends>
+   <header location="global">vramviewer.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -11,6 +11,7 @@ class Disassembler;
 class RegisterViewer;
 class MemoryViewer;
 class StackViewer;
+class VramViewer;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,12 +26,9 @@ public:
     ~MainWindow();
     void update();
 
-<<<<<<< HEAD
 public slots:
     void reset();
 
-=======
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
 private:
     Ui::MainWindow *ui;
 
@@ -42,6 +40,7 @@ private:
     RegisterViewer *registerviewer;
     MemoryViewer *memoryviewer;
     StackViewer *stackviewer;
+    VramViewer *vramviewer;
 
 };
 #endif // MAINWINDOW_H

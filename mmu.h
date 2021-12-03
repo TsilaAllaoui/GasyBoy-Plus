@@ -6,13 +6,16 @@
 #include <fstream>
 #include <ctime>
 #include <QFile>
+#include <QWidget>
 
 #include "defs.h"
 
 using namespace std;
 
-class Mmu
+class Mmu : public QWidget
 {
+    Q_OBJECT
+
 	private:
 		uint8_t Bios[0x100] = {
             0x31, 0xFE, 0xFF, 0xAF, 0x21, 0xFF, 0x9F, 0x32, 0xCB, 0x7C, 0x20, 0xFB, 0x21, 0x26,
@@ -76,6 +79,11 @@ class Mmu
 		void setKeypress(int key);
 		void setKeyrelease(int key);
 		void set_pad(uint8_t value);
+    public slots:
+        void changedVram(uint16_t value);
+    signals:
+    void vramWritten();
+    void vramWrittenWithWord(uint16_t addr);
 
 };
 

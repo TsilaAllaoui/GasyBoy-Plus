@@ -53,7 +53,6 @@
       <string>ROM</string>
      </property>
     </item>
-<<<<<<< HEAD
     <item>
      <property name="text">
       <string>VRAM</string>
@@ -69,8 +68,6 @@
       <string>WRAM</string>
      </property>
     </item>
-=======
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
    </widget>
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">

@@ -15,18 +15,19 @@ Cpu::Cpu(Mmu *p_mmu)
 {
     enable_interrupt = false;
     mmu = p_mmu;
-    AF.set(0);
+    AF.set(0xA0);
     BC.set(0);
     DE.set(0);
-    HL.set(0);
-    PC = 0;
+    HL.set(0x7FFF);
+    PC = 0xC;
     prev_CP = 0;
-    SP = 0xFFFD;
+    SP = 0xFFFE;
     cycle = 0;
     divide_counter = 0;
     timer_counter = 1024;
     start_debug = false;
     gpu_debug = false;
+    interrupter = new Interrupter(mmu, this);
 }
 
 Cpu::~Cpu()
@@ -43,9 +44,7 @@ int Cpu::cpuStep()
     executeOpcode();
     if (start_debug)
         debug();
-
-
-
+    interrupter->handleInterrupts();
     return cycle;
 }
 

@@ -6,6 +6,7 @@
 #include <vector>
 #include <fstream>
 #include <bitset>
+#include <QWidget>
 
 #include "register.h"
 #include "mmu.h"
@@ -13,9 +14,16 @@
 using namespace std;
 
 class Mmu;
+class Interrupter;
 
-class Cpu
+class Cpu : public QWidget
 {
+
+    Q_OBJECT
+
+signals:
+    void cpuStepped();
+
 	private:
 		Mmu *mmu;
 	    SpecialRegister AF;
@@ -30,6 +38,7 @@ class Cpu
 	    bool enable_interrupt;
 	    bool running;
 		int cpuState;
+        Interrupter *interrupter;
 
 	public:
 		Cpu();

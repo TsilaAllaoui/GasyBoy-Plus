@@ -41,11 +41,7 @@ void RegisterViewer::update()
     ui->CcheckBox->setCheckState(cpu->get_specialRegister().get_carryflag() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
 }
 
-<<<<<<< HEAD
 void RegisterViewer::onCpuStepped()
-=======
-void RegisterViewer::updateRegisters()
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
 {
     this->update();
 }

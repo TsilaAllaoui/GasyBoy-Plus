@@ -7,11 +7,6 @@
 #include <vector>
 #include <QTimer>
 
-
-class Cpu;
-class Mmu;
-
-
 //structure for an opcode
 struct opcode
 {
@@ -19,11 +14,12 @@ struct opcode
     QString mnemonic;
 };
 
-<<<<<<< HEAD
+
+class Cpu;
+class Mmu;
+
 using namespace std;
 
-=======
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
 namespace Ui {
 class Disassembler;
 }
@@ -38,29 +34,18 @@ public:
     ~Disassembler();
     opcode getOpcodeInfos(int index);
     void fillMap();
+    void cpuStep();
     void update();
 
 private slots:
     void on_pushButton_clicked();
-<<<<<<< HEAD
     void on_ContinueButton_clicked();
     void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
-
     void on_pushButton_2_clicked();
 
 signals:
     void cpuStepped();
     void emuReset();
-=======
-    //void on_ContinueButton_clicked();
-    void on_ContinueButton_clicked();
-
-    void on_pushButton_2_clicked();
-
-    void loop();
-signals:
-    void cpuStepped();
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
 
 private:
     Cpu *cpu;
@@ -70,11 +55,8 @@ private:
     std::vector<uint8_t> listA;
     std::vector<int> listB;
     bool running;
-<<<<<<< HEAD
     vector<int> breakPoints;
-=======
-    int step;
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
+    QThread *disassemblerThread;
 };
 
 #endif // DISASSEMBLER_H

@@ -16,7 +16,8 @@ MemoryViewer::MemoryViewer(Mmu *pmmu, QWidget *parent) :
     mmu = pmmu;
     ui->tableWidget->horizontalHeader()->hide();
     ui->tableWidget->setColumnCount(divide);
-    this->update();
+    drawer = new memoryDrawerThread(mmu);
+    this->setView();
 }
 
 MemoryViewer::~MemoryViewer()
@@ -24,7 +25,7 @@ MemoryViewer::~MemoryViewer()
     delete ui;
 }
 
-void MemoryViewer::update()
+void MemoryViewer::setView()
 {
     QStringList Vheaders;
     QString Hhead = "";
@@ -44,10 +45,6 @@ void MemoryViewer::update()
             }
         }
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
     else if (ui->comboBox->currentText() == "ROM")
     {
         ui->tableWidget->setRowCount(0x8000 /divide);
@@ -63,7 +60,6 @@ void MemoryViewer::update()
             }
         }
     }
-<<<<<<< HEAD
     else if (ui->comboBox->currentText() == "VRAM")
     {
         ui->tableWidget->setRowCount(0x2000/divide);
@@ -109,17 +105,50 @@ void MemoryViewer::update()
             }
         }
     }
-=======
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
 
     ui->tableWidget->setVerticalHeaderLabels(Vheaders);
     for (int i=0; i<ui->tableWidget->columnCount(); i++)
         ui->tableWidget->resizeColumnToContents(i);
 }
 
-
 void MemoryViewer::on_comboBox_currentIndexChanged(const int value)
 {
-    this->update();
+    this->setView();
 }
 
+void MemoryViewer::onMmuWritten(uint16_t adress)
+{
+    int j = (adress & 0xF);
+    int i = (adress & 0xF0) >> 4;
+    QTableWidgetItem *item = new QTableWidgetItem(QString::number(mmu->read_ram(adress), 16).toUpper());
+    ui->tableWidget->setItem(i, j, item);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+memoryDrawerThread::memoryDrawerThread(Mmu *pmmu)
+{
+    mmu = pmmu;
+    divide = 16;
+}
+
+void memoryDrawerThread::run()
+{
+
+}

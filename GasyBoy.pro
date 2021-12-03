@@ -11,31 +11,36 @@ CONFIG += c++11
 SOURCES += \
     cpu.cpp \
     disassembler.cpp \
+    interrupt.cpp \
     main.cpp \
     mainwindow.cpp \
     memoryviewer.cpp \
     mmu.cpp \
     register.cpp \
     registerviewer.cpp \
-    stackviewer.cpp
+    stackviewer.cpp \
+    vramviewer.cpp
 
 HEADERS += \
     cpu.h \
     defs.h \
     disassembler.h \
+    interrupt.h \
     mainwindow.h \
     memoryviewer.h \
     mmu.h \
     register.h \
     registerviewer.h \
-    stackviewer.h
+    stackviewer.h \
+    vramviewer.h
 
 FORMS += \
     disassembler.ui \
     mainwindow.ui \
     memoryviewer.ui \
     registerviewer.ui \
-    stackviewer.ui
+    stackviewer.ui \
+    vramviewer.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

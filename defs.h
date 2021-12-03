@@ -5,11 +5,9 @@
 #include <QListWidget>
 #include <QAbstractItemView>
 #include <QDebug>
-<<<<<<< HEAD
 #include <QMessageBox>
+#include <QThread>
 #include <vector>
-=======
->>>>>>> 9a26bd095dc315697edc3a0680880bcec309c3c4
 
 #include "cpu.h"
 #include "register.h"
@@ -18,6 +16,8 @@
 #include "registerviewer.h"
 #include "memoryviewer.h"
 #include "stackviewer.h"
+#include "vramviewer.h"
+#include "interrupt.h"
 
 #define MAXCYCLE 70224
 #define WIDTH 160

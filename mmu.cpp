@@ -86,24 +86,27 @@ uint8_t Mmu::read_ram(uint16_t adrr)
 			else return WorkingRAM[adrr - 0xC000];
 		}
 	}
+    return 0;
 }
 
-void Mmu::write_ram(uint16_t adrr, uint8_t value)
+void Mmu::write_ram(uint16_t adress, uint8_t value)
 {
-	if (adrr < 0x7FFF)
+    if (adress < 0x7FFF)
 		return;
-	else if (adrr >= 0x8000 && adrr < 0xA000)
+    else if (adress >= 0x8000 && adress < 0xA000)
 	{
-		VRAM[adrr - 0x8000] = value;
+        VRAM[adress - 0x8000] = value;
         // cout << hex << (int)value << " stored into vram" << endl;
 		if (value != 0)
 			modified_vram = true;
+        emit vramWritten();
+        changedVram(adress);
 	}
-	else if (adrr >= 0xA000 && adrr < 0xC000)
-		ExtRAM[adrr - 0xA000] = value;
-	else if (adrr >= 0xC000 && adrr <= 0xFFFF)
+    else if (adress >= 0xA000 && adress < 0xC000)
+        ExtRAM[adress - 0xA000] = value;
+    else if (adress >= 0xC000 && adress <= 0xFFFF)
 	{
-        WorkingRAM[adrr - 0xC000] = value;
+        WorkingRAM[adress - 0xC000] = value;
 		/*if (adrr == 0xFF46)
  			DoDMATransfert(value);
         else if (adrr = 0xFF47)
@@ -124,6 +127,11 @@ void Mmu::set_pad(uint8_t value)
         joypadState = 0x1F;//0b00011111;
     else if (!(value & (1<<4)))
         joypadState = 0x2F;//0b00101111;
+}
+
+void Mmu::changedVram(uint16_t value)
+{
+    emit vramWrittenWithWord(value);
 }
 
 uint8_t Mmu::GetJoyPad()
